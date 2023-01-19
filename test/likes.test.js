@@ -30,7 +30,7 @@ describe('total likes', ()=>{
         "title": "second blog",
         "author": "unknown",
         "url": "www.unkown.com",
-        "likes": 12,
+        "likes": 10,
         "__v": 0
     },
     {
@@ -38,10 +38,10 @@ describe('total likes', ()=>{
         "title": "third blog",
         "author": "unknown",
         "url": "www.unkown.com",
-        "likes": 12,
+        "likes": 8,
         "__v": 0
     },]
-        expect(listHelper.totalLikes(blogs)).toBe(3*12)
+        expect(listHelper.totalLikes(blogs)).toBe(30)
     })
 })
 
