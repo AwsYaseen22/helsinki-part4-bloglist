@@ -7,5 +7,5 @@ const server = http.createServer(app);
 
 const PORT = config.PORT;
 server.listen(PORT, () => {
-  logger.info(`Server running on port ${PORT}`);
+  logger.info(`Server running on port ${PORT} as a ${config.environment} mode`);
 });
