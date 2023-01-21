@@ -34,6 +34,24 @@ describe('tests for blog api', () => {
     expect(blogs.body[0].id).toBeDefined()
   })
 
+  test('can creates a new blog post', async() => {
+    const newPost = {
+      title: 'added by test post request',
+      author: 'unknown',
+      url: 'www.unkown.com',
+      likes: 10,
+    }
+    await api
+      .post('/api/blogs')
+      .send(newPost)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    const blogsAfterAdd = await api.get('/api/blogs')
+    expect(blogsAfterAdd.body).toHaveLength(helper.initialBlogs.length+1)
+    const contents = blogsAfterAdd.body.map(b => b.title)
+    expect(contents).toContain('added by test post request')
+  })
+
 })
 
 afterAll(() => {
