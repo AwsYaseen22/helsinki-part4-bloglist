@@ -102,7 +102,7 @@ describe('tests deletion a blog post', () => {
   })
 })
 
-describe('tests deletion a blog post', () => {
+describe('tests to update a blog post', () => {
   test('could update the number of likes for a blog post', async() => {
     const blogs = await api.get('/api/blogs')
     const blogToUpdate = blogs.body[0]
