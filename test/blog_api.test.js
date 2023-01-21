@@ -17,18 +17,19 @@ beforeEach(async()=>{
 
 
 describe('tests for blog api', ()=>{
-  test('blogs are returned as json', ()=>{
-    api
+  
+	test('blogs are returned as json', async()=>{
+    await api
       .get('/api/blogs')
 			.expect(200)
 			.expect('Content-Type', /application\/json/)
   })
-  test('returns the correct amount of blog posts in the JSON format', ()=>{
-    api.get('/api/blogs').then(response=>{
-			expect(response.body).toHaveLength(helper.initialBlogs.length)
-		})
-			
+
+	test('returns the correct amount of blog posts in the JSON format', async()=>{
+    const blogs = await api.get('/api/blogs')
+		expect(blogs.body).toHaveLength(helper.initialBlogs.length)
   })
+	
 })
 
 afterAll(()=>{
