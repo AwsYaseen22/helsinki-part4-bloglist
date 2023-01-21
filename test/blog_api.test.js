@@ -102,6 +102,24 @@ describe('tests deletion a blog post', () => {
   })
 })
 
+describe('tests deletion a blog post', () => {
+  test('could update the number of likes for a blog post', async() => {
+    const blogs = await api.get('/api/blogs')
+    const blogToUpdate = blogs.body[0]
+    const blog = {
+      likes: 333
+    }
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(blog)
+      .expect(200)
+      .expect('Content-Type', /application\/json/)
+
+    const afterUpdate = await api.get(`/api/blogs/${blogToUpdate.id}`)
+    expect(afterUpdate.body.likes).toBe(blog.likes)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
