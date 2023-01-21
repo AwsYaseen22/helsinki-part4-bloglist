@@ -15,7 +15,7 @@ beforeEach(async() => {
 })
 
 
-describe('tests for blog api', () => {
+describe('tests initials', () => {
 
   test('blogs are returned as json', async() => {
     await api
@@ -33,6 +33,9 @@ describe('tests for blog api', () => {
     const blogs = await api.get('/api/blogs')
     expect(blogs.body[0].id).toBeDefined()
   })
+})
+
+describe('tests for add new blog posts', () => {
 
   test('can creates a new blog post', async() => {
     const newPost = {
@@ -83,6 +86,20 @@ describe('tests for blog api', () => {
     expect(blogsAfterAdd.body).toHaveLength(helper.initialBlogs.length)
   })
 
+})
+
+describe('tests deletion a blog post', () => {
+  test('ability to remove specific blog by its id', async() => {
+    const blogs = await api.get('/api/blogs')
+    const blogToDelete = blogs.body[0]
+    const id = blogToDelete.id
+    await api
+      .delete(`/api/blogs/${id}`)
+      .expect(204)
+
+    const blogsAfterDelete = await api.get('/api/blogs')
+    expect(blogsAfterDelete.body).toHaveLength(helper.initialBlogs.length-1)
+  })
 })
 
 afterAll(() => {
