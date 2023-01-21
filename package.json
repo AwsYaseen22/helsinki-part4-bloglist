@@ -4,6 +4,8 @@
   "description": "blog list app",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix",
     "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development nodemon index.js",
     "test": "NODE_ENV=test jest --verbose --runInBand --forceExit"
@@ -14,9 +16,11 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
     "mongoose": "^6.8.4"
   },
   "devDependencies": {
+    "eslint": "^8.32.0",
     "jest": "^29.3.1",
     "nodemon": "^2.0.20",
     "supertest": "^6.3.3"
