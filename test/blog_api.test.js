@@ -29,7 +29,12 @@ describe('tests for blog api', ()=>{
     const blogs = await api.get('/api/blogs')
 		expect(blogs.body).toHaveLength(helper.initialBlogs.length)
   })
-	
+
+	test('the unique identifier property of the blog posts is named id', async()=>{
+    const blogs = await api.get('/api/blogs')
+		expect(blogs.body[0].id).toBeDefined()
+  })
+
 })
 
 afterAll(()=>{
