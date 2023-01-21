@@ -70,6 +70,19 @@ describe('tests for blog api', () => {
     expect(likes[likes.length-1]).toBe(0)
   })
 
+  test('if title or url missed, the responds will be with status code 400', async() => {
+    const newPost = {
+      author: 'unknown',
+      likes: 10,
+    }
+    await api
+      .post('/api/blogs')
+      .send(newPost)
+      .expect(400)
+    const blogsAfterAdd = await api.get('/api/blogs')
+    expect(blogsAfterAdd.body).toHaveLength(helper.initialBlogs.length)
+  })
+
 })
 
 afterAll(() => {
