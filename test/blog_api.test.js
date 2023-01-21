@@ -52,6 +52,24 @@ describe('tests for blog api', () => {
     expect(contents).toContain('added by test post request')
   })
 
+  test('if no likes property in the request, the default is 0', async() => {
+    const newPost = {
+      title: 'added by test post request',
+      author: 'unknown',
+      url: 'www.unkown.com',
+    }
+    await api
+      .post('/api/blogs')
+      .send(newPost)
+      .expect(201)
+      .expect('Content-Type', /application\/json/)
+    const blogsAfterAdd = await api.get('/api/blogs')
+    expect(blogsAfterAdd.body).toHaveLength(helper.initialBlogs.length+1)
+    const likes = blogsAfterAdd.body.map(b => b.likes)
+    expect(blogsAfterAdd.body[blogsAfterAdd.body.length-1].likes).toBeDefined()
+    expect(likes[likes.length-1]).toBe(0)
+  })
+
 })
 
 afterAll(() => {
