@@ -24,35 +24,33 @@ blogRouter.get('/:id', async(request, response) => {
 
 blogRouter.post('/', async(request, response) => {
   const body = request.body
-  const token = request.token
-  const tokenDetails = jwt.verify(token, process.env.SECRET)
-  if(!tokenDetails.id){
-    return response.status(401).json({ error: 'token invalid' })
-  }
-  const user1 = await User.findById(tokenDetails.id)
+  // moved to middleware userExtractor
+  // const token = request.token
+  // const tokenDetails = jwt.verify(token, process.env.SECRET)
+  // if(!tokenDetails.id){
+  //   return response.status(401).json({ error: 'token invalid' })
+  // }
+  // const user1 = await User.findById(tokenDetails.id)
+  const user = request.user
   const blog = {
     'title': body.title,
     'author': body.author,
     'url': body.url,
     'likes': body.likes,
-    'user': user1._id
+    'user': user._id
   }
 
   const newBlog = new Blog(blog)
   const savedBlog = await newBlog.save()
-  user1.blogs = user1.blogs.concat(savedBlog._id)
-  await user1.save()
+  user.blogs = user.blogs.concat(savedBlog._id)
+  await user.save()
   response.status(201).json(savedBlog)
 })
 
 blogRouter.delete('/:id', async(request, response) => {
   const id = request.params.id
   const blog = await Blog.findById(id)
-  const tokenDetails = jwt.verify(request.token, process.env.SECRET)
-  if(!tokenDetails.id){
-    return response.status(401).json({ error: 'token invalid' })
-  }
-  const userId = tokenDetails.id.toString()
+  const userId = request.user._id.toString()
   if(blog.user.toString() === userId){
     await Blog.findByIdAndRemove(id)
     response.status(204).end()
