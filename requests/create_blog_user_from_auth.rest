@@ -1,6 +1,6 @@
 POST  http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF3cyIsImlkIjoiNjNjZTkwNDFhNmFkZDUwZWZkZGEyNTZkIiwiaWF0IjoxNjc0NTA0Njc3LCJleHAiOjE2NzQ1MDgyNzd9.ipLHnGpU_n-vVQ6nJ1JB76KBx8a8C01hVC6WiO0OmdM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImF3cyIsImlkIjoiNjNjZTkwNDFhNmFkZDUwZWZkZGEyNTZkIiwiaWF0IjoxNjc0NTA1MjAzLCJleHAiOjE2NzQ1MDg4MDN9.goBrJlrxxbwEq_DqY1i05ZfFjGo3yZHyhdLHaFQGYFg
 
 {
     "title": "blog with user from Authorization fix Bearer",

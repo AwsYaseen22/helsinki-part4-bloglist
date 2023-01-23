@@ -13,17 +13,18 @@ blogRouter.get('/:id', async(request, response) => {
   response.json(blogs)
 })
 
-const getTokenFrom = request => {
-  const authorization = request.get('authorization')
-  if(authorization && authorization.startsWith('Bearer ')){
-    return authorization.replace('Bearer ', '')
-  }
-  return null
-}
+// moved to middleware
+// const getTokenFrom = request => {
+//   const authorization = request.get('authorization')
+//   if(authorization && authorization.startsWith('Bearer ')){
+//     return authorization.replace('Bearer ', '')
+//   }
+//   return null
+// }
 
 blogRouter.post('/', async(request, response) => {
   const body = request.body
-  const token = getTokenFrom(request)
+  const token = request.token
   const tokenDetails = jwt.verify(token, process.env.SECRET)
   if(!tokenDetails.id){
     return response.status(401).json({ erro: 'token invalid' })
