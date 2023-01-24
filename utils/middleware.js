@@ -1,3 +1,4 @@
+const { json } = require( 'express' )
 const jwt= require('jsonwebtoken')
 const User = require('../models/user')
 const logger = require('./logger')
@@ -44,7 +45,10 @@ const tokenExtractor = (request, response, next) => {
 
 const userExtractor = async(request, response, next) => {
   const token = request.token
-  const tokenDetails = jwt.verify(token, process.env.SECRET)
+  if(token==='undefined'){
+    return response.status(401).json({ error: 'token does not provided' })
+  }
+  const tokenDetails = jwt.verify(token, 'topsecret')
   if(!tokenDetails.id){
     return response.status(401).json({ error: 'token invalid' })
   }

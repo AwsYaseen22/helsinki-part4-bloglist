@@ -1,7 +1,8 @@
-const jwt = require('jsonwebtoken')
+
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
-const User = require( '../models/user' )
+const { userExtractor }  = require('../utils/middleware')
+
 
 blogRouter.get('/', async(request, response) => {
   const blogs = await Blog.find({}).populate('user', { username:1, name:1 })
@@ -22,7 +23,7 @@ blogRouter.get('/:id', async(request, response) => {
 //   return null
 // }
 
-blogRouter.post('/', async(request, response) => {
+blogRouter.post('/', userExtractor, async(request, response) => {
   const body = request.body
   // moved to middleware userExtractor
   // const token = request.token
@@ -47,7 +48,7 @@ blogRouter.post('/', async(request, response) => {
   response.status(201).json(savedBlog)
 })
 
-blogRouter.delete('/:id', async(request, response) => {
+blogRouter.delete('/:id', userExtractor, async(request, response) => {
   const id = request.params.id
   const blog = await Blog.findById(id)
   const userId = request.user._id.toString()
@@ -59,7 +60,7 @@ blogRouter.delete('/:id', async(request, response) => {
   }
 })
 
-blogRouter.put('/:id', async(request, response) => {
+blogRouter.put('/:id', userExtractor,async(request, response) => {
   const id = request.params.id
   const { likes } = request.body
   const updatedBlog = await Blog.findByIdAndUpdate(id, { likes }, { new: true })
