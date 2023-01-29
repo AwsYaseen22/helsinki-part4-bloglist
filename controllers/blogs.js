@@ -1,15 +1,13 @@
-
 const blogRouter = require('express').Router()
 const Blog = require('../models/blog')
-const { userExtractor }  = require('../utils/middleware')
+const { userExtractor } = require('../utils/middleware')
 
-
-blogRouter.get('/', async(request, response) => {
-  const blogs = await Blog.find({}).populate('user', { username:1, name:1 })
+blogRouter.get('/', async (request, response) => {
+  const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
   response.json(blogs)
 })
 
-blogRouter.get('/:id', async(request, response) => {
+blogRouter.get('/:id', async (request, response) => {
   const blogs = await Blog.findById(request.params.id)
   response.json(blogs)
 })
@@ -23,7 +21,7 @@ blogRouter.get('/:id', async(request, response) => {
 //   return null
 // }
 
-blogRouter.post('/', userExtractor, async(request, response) => {
+blogRouter.post('/', userExtractor, async (request, response) => {
   const body = request.body
   // moved to middleware userExtractor
   // const token = request.token
@@ -34,11 +32,11 @@ blogRouter.post('/', userExtractor, async(request, response) => {
   // const user1 = await User.findById(tokenDetails.id)
   const user = request.user
   const blog = {
-    'title': body.title,
-    'author': body.author,
-    'url': body.url,
-    'likes': body.likes,
-    'user': user._id
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes,
+    user: user._id,
   }
 
   const newBlog = new Blog(blog)
@@ -48,22 +46,26 @@ blogRouter.post('/', userExtractor, async(request, response) => {
   response.status(201).json(savedBlog)
 })
 
-blogRouter.delete('/:id', userExtractor, async(request, response) => {
+blogRouter.delete('/:id', userExtractor, async (request, response) => {
   const id = request.params.id
   const blog = await Blog.findById(id)
   const userId = request.user._id.toString()
-  if(blog.user.toString() === userId){
+  if (blog.user.toString() === userId) {
     await Blog.findByIdAndRemove(id)
     response.status(204).end()
-  }else{
+  } else {
     return response.status(401).json({ error: 'unauthorized person' })
   }
 })
 
-blogRouter.put('/:id', userExtractor,async(request, response) => {
+blogRouter.put('/:id', userExtractor, async (request, response) => {
   const id = request.params.id
-  const { likes } = request.body
-  const updatedBlog = await Blog.findByIdAndUpdate(id, { likes }, { new: true })
+  // const { likes } = request.body
+  const updatedBlog = await Blog.findByIdAndUpdate(
+    id,
+    request.body,
+    { new: true }
+  )
   response.json(updatedBlog)
 })
 
